@@ -1,6 +1,6 @@
 import WeekProgressCard from './components/WeekProgressCard';
-import TodoSection from './components/TodoSection';
-import DiarySection from './components/DiarySection';
+import TodoCard from './components/TodoCard';
+import DiaryCard from './components/DiaryCard';
 
 export default function App() {
   return (
@@ -11,8 +11,8 @@ export default function App() {
       </header>
       <WeekProgressCard />
       <div className='grid grid-cols-2 gap-8'>
-        <TodoSection />
-        <DiarySection />
+        <TodoCard />
+        <DiaryCard />
       </div>
     </div>
   );
