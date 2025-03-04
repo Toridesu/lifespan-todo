@@ -1,23 +1,48 @@
 import { Header } from './Header';
-import { List } from 'lucide-react';
+import { List, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
-import { useState } from 'react';
+import { Button } from './ui/button';
+import { useState, FormEvent } from 'react';
+import { useTodos } from '../hooks/useTodos';
+import { motion } from 'framer-motion';
+import { getInitialTodos } from '../mocks/todoData';
 
 const TodoCard = () => {
-  const [todoText, setTodoText] = useState("TODO1")
-  
+  const [newTodo, setNewTodo] = useState('');
+  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos(getInitialTodos());
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (newTodo.trim()) {
+      addTodo(newTodo.trim());
+      setNewTodo('');
+    }
+  };
+
   return (
-    <Card className='py-6 shadow-lg' style={{ marginTop: '0px' }}>
+    <Card className='py-6 shadow-lg hover:shadow-xl transition-shadow duration-300'>
       <CardContent>
         <Header title='いつかやりたい事' icon={List} />
-        <form className='flex items-center space-x-3'>
-          <input type='text' placeholder='＋ 新しいタスクを追加' className='flex-1 p-2 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 bg-gray-100' />
+        <form className='flex items-center space-x-3' onSubmit={handleSubmit}>
+          <input type='text' placeholder='新しいタスクを追加' className='flex-1 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 border border-gray-200' value={newTodo} onChange={(e) => setNewTodo(e.target.value)} />
+          <Button type='submit' variant='default' size='icon' className='bg-blue-500 hover:bg-blue-600'>
+            <Plus className='h-5 w-5' />
+          </Button>
         </form>
-        <div className='space-y-2 mt-4'>
-          <div className='flex items-center p-2 rounded-md focus-within:bg-gray-200'>
-            <input type='checkbox' className='form-checkbox h-5 w-5 text-gray-600 transition duration-150 ease-in-out' />
-            <input type="text" value={todoText} onChange={(e) => setTodoText(e.target.value)} className='flex-1 ml-3  rounded bg-transparent focus:outline-none '/>
-          </div>
+        <div className='space-y-1 mt-4'>
+          {todos.length === 0 ? (
+            <p className='text-gray-500 text-center py-4'>タスクがありません。新しいタスクを追加しましょう！</p>
+          ) : (
+            todos.map((todo) => (
+              <motion.div key={todo.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }} className={`flex items-center p-1 rounded-md hover:bg-gray-100 transition-colors duration-200 ${todo.completed ? 'bg-gray-50' : ''}`}>
+                <input type='checkbox' checked={todo.completed} onChange={() => toggleTodo(todo.id)} className='form-checkbox h-5 w-5 text-blue-600 rounded-md transition duration-150 ease-in-out focus:ring-2 focus:ring-blue-500 focus:ring-offset-2' />
+                <span className={`flex-1 ml-3 ${todo.completed ? 'line-through text-gray-400' : 'text-gray-800'}`}>{todo.content}</span>
+                <Button type='button' onClick={() => deleteTodo(todo.id)} variant='ghost' size='icon' className='text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors'>
+                  <Trash2 className='h-4 w-4' />
+                </Button>
+              </motion.div>
+            ))
+          )}
         </div>
       </CardContent>
     </Card>
