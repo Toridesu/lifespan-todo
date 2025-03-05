@@ -1,5 +1,12 @@
 import { Header } from './Header';
-import { PenLine, Save, Edit, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  PenLine,
+  Save,
+  Edit,
+  Calendar as CalendarIcon,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { Calendar } from './ui/calendar';
@@ -50,7 +57,9 @@ const DiaryCard = () => {
   const handleDateSelect = useCallback(
     (date: Date | undefined) => {
       setSelectedDate(date);
-      const entry = pastEntries.find((entry) => format(entry.date, 'yyyy-MM-dd') === format(date!, 'yyyy-MM-dd'));
+      const entry = pastEntries.find(
+        entry => format(entry.date, 'yyyy-MM-dd') === format(date!, 'yyyy-MM-dd')
+      );
       if (entry) {
         setContent(entry.content);
       } else {
@@ -64,9 +73,13 @@ const DiaryCard = () => {
     (direction: 'prev' | 'next') => {
       if (!selectedDate) return;
 
-      const sortedDates = pastEntries.map((entry) => entry.date).sort((a, b) => a.getTime() - b.getTime());
+      const sortedDates = pastEntries
+        .map(entry => entry.date)
+        .sort((a, b) => a.getTime() - b.getTime());
 
-      const currentIndex = sortedDates.findIndex((date) => format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd'));
+      const currentIndex = sortedDates.findIndex(
+        date => format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
+      );
 
       let newDate: Date | undefined;
       if (direction === 'prev' && currentIndex > 0) {
@@ -77,9 +90,9 @@ const DiaryCard = () => {
         // 現在の日付に日記がない場合、最も近い日記のある日付を探す
         const timestamp = selectedDate.getTime();
         if (direction === 'prev') {
-          newDate = sortedDates.filter((date) => date.getTime() < timestamp).pop();
+          newDate = sortedDates.filter(date => date.getTime() < timestamp).pop();
         } else {
-          newDate = sortedDates.filter((date) => date.getTime() > timestamp)[0];
+          newDate = sortedDates.filter(date => date.getTime() > timestamp)[0];
         }
       }
 
@@ -92,7 +105,7 @@ const DiaryCard = () => {
 
   const hasEntryOnDate = useCallback(
     (date: Date) => {
-      return pastEntries.some((entry) => isSameDay(entry.date, date));
+      return pastEntries.some(entry => isSameDay(entry.date, date));
     },
     [pastEntries]
   );
@@ -104,15 +117,30 @@ const DiaryCard = () => {
         <div className='space-y-6'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-2'>
-              <Button variant='outline' size='icon' onClick={() => navigateDay('prev')} disabled={!selectedDate || !pastEntries.some((entry) => entry.date.getTime() < selectedDate.getTime())}>
+              <Button
+                variant='outline'
+                size='icon'
+                onClick={() => navigateDay('prev')}
+                disabled={
+                  !selectedDate ||
+                  !pastEntries.some(entry => entry.date.getTime() < selectedDate.getTime())
+                }
+              >
                 <ChevronLeft className='h-4 w-4' />
               </Button>
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant='outline' className='w-[240px] justify-start text-left font-normal'>
+                  <Button
+                    variant='outline'
+                    className='w-[240px] justify-start text-left font-normal'
+                  >
                     <CalendarIcon className='mr-2 h-4 w-4' />
-                    {selectedDate ? format(selectedDate, 'yyyy年MM月dd日 (E)', { locale: ja }) : <span>日付を選択</span>}
+                    {selectedDate ? (
+                      format(selectedDate, 'yyyy年MM月dd日 (E)', { locale: ja })
+                    ) : (
+                      <span>日付を選択</span>
+                    )}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className='w-auto p-0' align='start'>
@@ -122,7 +150,7 @@ const DiaryCard = () => {
                     onSelect={handleDateSelect}
                     locale={ja}
                     modifiers={{
-                      hasEntry: (date) => hasEntryOnDate(date),
+                      hasEntry: date => hasEntryOnDate(date),
                     }}
                     modifiersStyles={{
                       hasEntry: {
@@ -134,7 +162,15 @@ const DiaryCard = () => {
                 </PopoverContent>
               </Popover>
 
-              <Button variant='outline' size='icon' onClick={() => navigateDay('next')} disabled={!selectedDate || !pastEntries.some((entry) => entry.date.getTime() > selectedDate.getTime())}>
+              <Button
+                variant='outline'
+                size='icon'
+                onClick={() => navigateDay('next')}
+                disabled={
+                  !selectedDate ||
+                  !pastEntries.some(entry => entry.date.getTime() > selectedDate.getTime())
+                }
+              >
                 <ChevronRight className='h-4 w-4' />
               </Button>
             </div>
@@ -153,7 +189,13 @@ const DiaryCard = () => {
           </div>
 
           <div className='space-y-4'>
-            <textarea placeholder='今日の出来事を記録しましょう...' className='bg-gray-100 w-full h-40 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none' value={content} onChange={(e) => setContent(e.target.value)} disabled={!isEditing || !selectedDate} />
+            <textarea
+              placeholder='今日の出来事を記録しましょう...'
+              className='bg-gray-100 w-full h-40 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none'
+              value={content}
+              onChange={e => setContent(e.target.value)}
+              disabled={!isEditing || !selectedDate}
+            />
           </div>
         </div>
       </CardContent>

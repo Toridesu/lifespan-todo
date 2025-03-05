@@ -17,15 +17,17 @@ export function useTodos(initialTodos: Todo[] = []) {
       completed: false,
       createdAt: new Date(),
     };
-    setTodos((prev) => [...prev, newTodo]);
+    setTodos(prev => [...prev, newTodo]);
   }, []);
 
   const toggleTodo = useCallback((id: string) => {
-    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)));
+    setTodos(prev =>
+      prev.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+    );
   }, []);
 
   const deleteTodo = useCallback((id: string) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    setTodos(prev => prev.filter(todo => todo.id !== id));
   }, []);
 
   return {
