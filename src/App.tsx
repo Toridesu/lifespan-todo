@@ -10,7 +10,7 @@ export default function App() {
         <p className='text-xl text-gray-500'>もうすぐ死ぬとしたら、今日は何をしますか？</p>
       </header>
       <WeekProgressCard />
-      <div className='grid grid-cols-2 gap-8'>
+      <div className='grid grid-cols-2 gap-8' style={{ marginTop: '2rem' }}> 
         <TodoCard />
         <DiaryCard />
       </div>

@@ -8,7 +8,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-export function calculateTimeLeft(): { timeLeft: TimeLeft; progress: number } {
+export function calculateTimeLeft(): { timeLeft: TimeLeft; progress: number; isWarning: boolean } {
   const now = new Date();
   const weekStart = startOfWeek(now, { weekStartsOn: 1 });
   const weekEnd = endOfWeek(now, { weekStartsOn: 1 });
@@ -24,7 +24,10 @@ export function calculateTimeLeft(): { timeLeft: TimeLeft; progress: number } {
     seconds: Math.floor((remaining % (1000 * 60)) / 1000),
   };
 
-  return { timeLeft, progress };
+  // 残り日数が0日の場合は警告フラグをtrueに設定]
+  const isWarning = timeLeft.days === 0; 
+
+  return { timeLeft, progress, isWarning };
 }
 
 export function useWeekTimer() {
@@ -35,12 +38,14 @@ export function useWeekTimer() {
     seconds: 0,
   });
   const [progress, setProgress] = useState(0);
+  const [isWarning, setIsWarning] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
-      const { timeLeft: newTimeLeft, progress: newProgress } = calculateTimeLeft();
+      const { timeLeft: newTimeLeft, progress: newProgress, isWarning: newIsWarning } = calculateTimeLeft();
       setTimeLeft(newTimeLeft);
       setProgress(newProgress);
+      setIsWarning(newIsWarning);
     };
 
     updateTime();
@@ -48,5 +53,5 @@ export function useWeekTimer() {
     return () => clearInterval(timer);
   }, []);
 
-  return { timeLeft, progress };
+  return { timeLeft, progress, isWarning };
 }
