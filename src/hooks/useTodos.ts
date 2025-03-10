@@ -30,10 +30,17 @@ export function useTodos(initialTodos: Todo[] = []) {
     setTodos(prev => prev.filter(todo => todo.id !== id));
   }, []);
 
+  const editTodo = useCallback((id: string, content: string) => {
+    setTodos(prev =>
+      prev.map(todo => (todo.id === id ? { ...todo, content } : todo))
+    );
+  }, []);
+
   return {
     todos,
     addTodo,
     toggleTodo,
     deleteTodo,
+    editTodo,
   };
 }

@@ -3,13 +3,14 @@ import { List, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 import { useState, FormEvent } from 'react';
-import { useTodos } from '../hooks/useTodos';
+import { useTodos, Todo } from '../hooks/useTodos';
 import { motion } from 'framer-motion';
 import { getInitialTodos } from '../mocks/todoData';
 
 const TodoCard = () => {
   const [newTodo, setNewTodo] = useState('');
-  const { todos, addTodo, toggleTodo, deleteTodo } = useTodos(getInitialTodos());
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const { todos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos(getInitialTodos());
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -17,6 +18,14 @@ const TodoCard = () => {
       addTodo(newTodo.trim());
       setNewTodo('');
     }
+  };
+
+  const handleEdit = (todo: Todo, e: React.FocusEvent<HTMLSpanElement>) => {
+    const newContent = e.currentTarget.textContent;
+    if (newContent && newContent !== todo.content) {
+      editTodo(todo.id, newContent);
+    }
+    setEditingId(null);
   };
 
   return (
@@ -66,7 +75,17 @@ const TodoCard = () => {
                 <span
                   className={`flex-1 ml-3 ${
                     todo.completed ? 'line-through text-gray-400' : 'text-gray-800'
-                  }`}
+                  } ${!todo.completed ? 'cursor-pointer' : ''} outline-none`}
+                  contentEditable={!todo.completed && editingId === todo.id}
+                  suppressContentEditableWarning
+                  onClick={e => {
+                    if (!todo.completed) {
+                      setEditingId(todo.id);
+                      e.currentTarget.focus();
+                    }
+                  }}
+                  onBlur={e => !todo.completed && handleEdit(todo, e)}
+                  style={{ outline: 'none' }}
                 >
                   {todo.content}
                 </span>
