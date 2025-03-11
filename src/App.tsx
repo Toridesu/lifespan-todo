@@ -1,6 +1,5 @@
-import WeekProgressCard from './components/WeekProgressCard';
+import LifespanCard from './components/LifespanCard';
 import TodoCard from './components/TodoCard';
-import DiaryCard from './components/DiaryCard';
 
 export default function App() {
   return (
@@ -9,10 +8,11 @@ export default function App() {
         <h1 className='text-6xl font-bold'>Lifespan TODO</h1>
         <p className='text-xl text-gray-500'>もうすぐ死ぬとしたら、今日は何をしますか？</p>
       </header>
-      <WeekProgressCard />
-      <div className='grid grid-cols-2 gap-8' style={{ marginTop: '2rem' }}> 
-        <TodoCard />
-        <DiaryCard />
+      <LifespanCard />
+      <div className='flex justify-center' style={{ marginTop: '2rem' }}>
+        <div className='w-full max-w-7xl'>
+          <TodoCard />
+        </div>
       </div>
     </div>
   );
