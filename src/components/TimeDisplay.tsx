@@ -1,3 +1,5 @@
+import { Card, CardContent } from './ui/card';
+
 interface TimeDisplayProps {
   timeLeft: {
     days: number;
@@ -28,12 +30,14 @@ export function TimeDisplay({ timeLeft, isWarning = false }: TimeDisplayProps) {
 
 function TimeBox({ label, value, unit, isWarning = false }: TimeBoxProps) {
   return (
-    <div className='bg-gray-100 w-full p-4 rounded-lg'>
-      <p className='text-sm font-medium text-gray-800'>{label}</p>
-      <p className={`text-3xl font-bold ${isWarning ? 'text-red-600' : 'text-gray-800'}`}>
-        {value}
-        {unit}
-      </p>
-    </div>
+    <Card className="w-full bg-gray-100 border-0">
+      <CardContent className="p-4">
+        <p className='text-sm font-medium text-gray-800'>{label}</p>
+        <p className={`text-3xl font-bold ${isWarning ? 'text-red-600' : 'text-gray-800'}`}>
+          {value}
+          {unit}
+        </p>
+      </CardContent>
+    </Card>
   );
 }
