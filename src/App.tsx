@@ -1,5 +1,5 @@
-import LifespanCard from './components/LifespanCard';
-import TodoCard from './components/TodoCard';
+import LifespanCard from './components/lifespan/LifespanCard';
+import TodoCard from './components/todo/TodoCard';
 
 export default function App() {
   return (
