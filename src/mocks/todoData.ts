@@ -1,6 +1,6 @@
 import { Todo } from '../hooks/useTodos';
 
-// モックデータの作成
+// サンプルTODOデータ
 export const mockTodos: Todo[] = [
   {
     id: '1',
@@ -34,7 +34,6 @@ export const mockTodos: Todo[] = [
   },
 ];
 
-// モックデータを使用するためのヘルパー関数
 export const getInitialTodos = (): Todo[] => {
   return [...mockTodos];
 };

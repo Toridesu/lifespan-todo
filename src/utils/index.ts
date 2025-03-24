@@ -24,7 +24,7 @@ export function calculateTimeLeft(): { timeLeft: TimeLeft; progress: number; isW
     seconds: Math.floor((remaining % (1000 * 60)) / 1000),
   };
 
-  // 残り日数が0日の場合は警告フラグをtrueに設定]
+  // 残り日数が0日の場合は警告表示
   const isWarning = timeLeft.days === 0; 
 
   return { timeLeft, progress, isWarning };

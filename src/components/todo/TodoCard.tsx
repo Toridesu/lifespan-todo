@@ -6,43 +6,31 @@ import { Separator } from '../ui/separator';
 import { useState, FormEvent, useCallback } from 'react';
 import { useTodos } from '../../hooks/useTodos';
 import { getInitialTodos } from '../../mocks/todoData';
-
-// 分割したコンポーネントをインポート
 import { Header } from '../common/Header';
 import { TodoList } from './TodoList';
 
-/**
- * TodoカードコンポーネントはToDoリスト全体の管理と表示を行う
- * - 新しいタスクの追加フォーム
- * - 未完了タスクのリスト
- * - 完了済みタスクのリスト
- */
 const TodoCard = () => {
-  // 新しいTodoの入力値を管理する状態
+  // 新しいTodoの入力値を管理
   const [newTodo, setNewTodo] = useState('');
-  
-  // 現在編集中のTodoのIDを管理する状態
-  const [editingId, setEditingId] = useState<string | null>(null);
-  
-  // useTodos カスタムフックからTodo管理機能を取得
-  // getInitialTodos()でモックデータを初期値として設定
-  const { todos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos(getInitialTodos());
 
-  /**
-   * 新しいTodo追加フォームの送信処理
-   * useCallbackで不要な再レンダリングを防止
-   * 
-   * @param {FormEvent} e - フォーム送信イベント
-   */
+  // 編集中のTodoIDを管理
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  // Todo管理機能を取得
+  const { todos, addTodo, toggleTodo, deleteTodo, editTodo, reorderTodos } = useTodos(
+    getInitialTodos()
+  );
+
+  // 新しいTodo追加処理
   const handleSubmit = useCallback(
     (e: FormEvent) => {
-      e.preventDefault(); // デフォルトのフォーム送信を防止
-      if (newTodo.trim()) { // 空でない場合のみ追加
+      e.preventDefault();
+      if (newTodo.trim()) {
         addTodo(newTodo.trim());
-        setNewTodo(''); // 入力フィールドをクリア
+        setNewTodo('');
       }
     },
-    [newTodo, addTodo] // 依存配列
+    [newTodo, addTodo]
   );
 
   return (
@@ -58,16 +46,16 @@ const TodoCard = () => {
             placeholder='新しいタスクを追加'
             className='flex-1 bg-gray-100 border-gray-200'
             value={newTodo}
-            onChange={e => setNewTodo(e.target.value)} // 入力値を状態に反映
+            onChange={e => setNewTodo(e.target.value)}
           />
           <Button
             type='submit'
             variant='default'
             size='icon'
             className='bg-gray-600 hover:bg-gray-700'
-            disabled={newTodo.trim() === ''} // 空の場合はボタンを無効化
+            disabled={newTodo.trim() === ''}
           >
-            <Plus className='h-5 w-5' /> {/* プラスアイコン */}
+            <Plus className='h-5 w-5' />
           </Button>
         </form>
 
@@ -75,28 +63,30 @@ const TodoCard = () => {
         <div className='space-y-1 mt-4'>
           <TodoList
             todos={todos}
-            completed={false} // 未完了タスクを表示
+            completed={false}
             editingId={editingId}
             setEditingId={setEditingId}
             toggleTodo={toggleTodo}
             deleteTodo={deleteTodo}
             editTodo={editTodo}
+            reorderTodos={reorderTodos}
           />
         </div>
 
-        {/* 完了済みタスクセクション */}
+        {/* 完了済みタスク */}
         <div className='mt-8'>
-          <Separator className='my-4' /> {/* 区切り線 */}
+          <Separator className='my-4' />
           <Header title='完了したタスク' icon={CheckCircle} />
           <div className='space-y-1'>
             <TodoList
               todos={todos}
-              completed={true} // 完了済みタスクを表示
+              completed={true}
               editingId={editingId}
               setEditingId={setEditingId}
               toggleTodo={toggleTodo}
               deleteTodo={deleteTodo}
               editTodo={editTodo}
+              reorderTodos={reorderTodos}
             />
           </div>
         </div>
