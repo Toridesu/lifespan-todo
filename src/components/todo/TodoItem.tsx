@@ -45,30 +45,33 @@ export const TodoItem = ({
       exit='exit'
       variants={todoItemVariants}
       transition={{ duration: 0.2 }}
-      className={`flex items-center p-1 rounded-md hover:bg-gray-100 transition-colors duration-200 ${
+      className={`flex items-center p-1 md:p-2 rounded-md hover:bg-gray-100 transition-colors duration-200 ${
         todo.completed ? 'bg-gray-50' : ''
       }`}
     >
-      {/* ドラッグハンドル */}
-      <div className='cursor-grab active:cursor-grabbing p-1 mr-1 text-gray-400 hover:text-gray-600'>
-        <GripVertical className='h-4 w-4' />
+      {/* ドラッグハンドル - モバイルで小さく */}
+      <div className='cursor-grab active:cursor-grabbing p-0.5 md:p-1 mr-0.5 md:mr-1 text-gray-400 hover:text-gray-600'>
+        <GripVertical className='h-3 w-3 md:h-4 md:w-4' />
       </div>
 
       {/* チェックボックス */}
-      <div className='flex items-center space-x-2'>
+      <div className='flex items-center justify-center my-auto'>
         <Checkbox
           id={`todo-${todo.id}`}
           checked={todo.completed}
           onCheckedChange={() => onToggle(todo.id)}
-          className='data-[state=checked]:bg-gray-600 data-[state=checked]:border-gray-600 border-gray-300'
+          aria-label={`タスク「${todo.content}」を${
+            todo.completed ? '未完了' : '完了'
+          }としてマーク`}
+          className='h-3 w-3 md:h-4 md:w-4 data-[state=checked]:bg-gray-600 data-[state=checked]:border-gray-600 border-gray-300'
         />
       </div>
 
       {/* Todoのテキスト部分 */}
       <div
-        className={`flex-1 ml-3 ${todo.completed ? 'text-gray-400' : 'text-gray-800'} ${
-          !todo.completed ? 'cursor-pointer' : ''
-        } outline-none`}
+        className={`flex-1 ml-2 md:ml-3 text-sm md:text-base ${
+          todo.completed ? 'text-gray-400' : 'text-gray-800'
+        } ${!todo.completed ? 'cursor-pointer' : ''} outline-none overflow-hidden break-words`}
         contentEditable={!todo.completed && isEditing}
         suppressContentEditableWarning
         onClick={e => {
@@ -84,7 +87,7 @@ export const TodoItem = ({
         {todo.content}
       </div>
 
-      {/* 削除ボタン */}
+      {/* 削除ボタン - モバイルで小さめに */}
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -93,9 +96,10 @@ export const TodoItem = ({
               onClick={() => onDelete(todo.id)}
               variant='ghost'
               size='icon'
-              className='text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors'
+              aria-label={`タスク「${todo.content}」を削除`}
+              className='h-6 w-6 md:h-8 md:w-8 p-0.5 md:p-1 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors'
             >
-              <Trash2 className='h-4 w-4' />
+              <Trash2 className='h-3.5 w-3.5 md:h-4 md:w-4' />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
