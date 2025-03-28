@@ -1,50 +1,39 @@
-# React + TypeScript + Vite
+# Lifespan TODO
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+残り時間を意識して、優先すべきタスクに集中するためのTODOアプリケーション。
 
-Currently, two official plugins are available:
+## 機能
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 週の残り時間を視覚的に表示（日・時間・分・秒）
+- タスクの追加、編集、削除機能
+- タスクの完了状態の切り替え
+- ドラッグ＆ドロップでのタスク並べ替え
+- 完了済みタスクと未完了タスクの分離表示
+- ローカルストレージへの自動保存
 
-## Expanding the ESLint configuration
+## 技術スタック
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React 19
+- TypeScript
+- Vite
+- TailwindCSS
+- Framer Motion (アニメーション)
+- Shadcn/UI (UIコンポーネント)
 
-- Configure the top-level `parserOptions` property like this:
+## 開発環境のセットアップ
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+# パッケージのインストール
+npm install
+
+# 開発サーバーの起動
+npm run dev
+
+# ビルド
+npm run build
+
+# ビルド結果のプレビュー
+npm run preview
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```

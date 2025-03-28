@@ -74,11 +74,13 @@ export const TodoItem = ({
         } ${!todo.completed ? 'cursor-pointer' : ''} outline-none overflow-hidden break-words`}
         contentEditable={!todo.completed && isEditing}
         suppressContentEditableWarning
-        onClick={e => {
-          if (!todo.completed) {
-            setEditingId(todo.id);
-            e.currentTarget.focus();
-            e.stopPropagation();
+        onKeyDown={e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            e.currentTarget.blur();
+          }
+          if (e.key === 'Escape') {
+            setEditingId(null);
           }
         }}
         onBlur={e => !todo.completed && handleEdit(e)}

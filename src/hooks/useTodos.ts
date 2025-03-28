@@ -9,12 +9,21 @@ export interface Todo {
 
 export function useTodos(initialTodos: Todo[] = []) {
   const [todos, setTodos] = useState<Todo[]>(() => {
-    const savedTodos = localStorage.getItem('todos');
-    return savedTodos ? JSON.parse(savedTodos) : initialTodos;
+    try {
+      const savedTodos = localStorage.getItem('todos');
+      return savedTodos ? JSON.parse(savedTodos) : initialTodos;
+    } catch (error) {
+      console.log('Failed to parse todos from localStorage:', error);
+      return initialTodos;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
+    try {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    } catch (error) {
+      console.log('Failed to parse todos from localStorage:', error);
+    }
   }, [todos]);
 
   // 新しいTodoを追加

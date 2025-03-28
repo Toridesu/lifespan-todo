@@ -25,7 +25,7 @@ export function calculateTimeLeft(): { timeLeft: TimeLeft; progress: number; isW
   };
 
   // 残り日数が0日の場合は警告表示
-  const isWarning = timeLeft.days === 0; 
+  const isWarning = timeLeft.days === 0;
 
   return { timeLeft, progress, isWarning };
 }
@@ -41,17 +41,42 @@ export function useWeekTimer() {
   const [isWarning, setIsWarning] = useState(false);
 
   useEffect(() => {
+    const timerRef = {current: 0} ;
+
     const updateTime = () => {
-      const { timeLeft: newTimeLeft, progress: newProgress, isWarning: newIsWarning } = calculateTimeLeft();
+      const {
+        timeLeft: newTimeLeft,
+        progress: newProgress,
+        isWarning: newIsWarning,
+      } = calculateTimeLeft();
       setTimeLeft(newTimeLeft);
       setProgress(newProgress);
       setIsWarning(newIsWarning);
     };
 
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
+   const handleVisibilityChange = () => {
+    if (document.hidden) {
+      clearInterval(timerRef.current);
+    } else {
+      updateTime();
+      timerRef.current = window.setInterval(updateTime, 1000);
+    }
+   };
+
+  // 初期化
+  updateTime();
+  timerRef.current = window.setInterval(updateTime, 1000);
+  
+  // visibilitychangeイベントを監視
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // クリーンアップ
+  return () => {
+    clearInterval(timerRef.current);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
+
+}, []);
 
   return { timeLeft, progress, isWarning };
 }
