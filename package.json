@@ -22,7 +22,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.6.0",
     "framer-motion": "^12.4.10",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
@@ -60,5 +60,8 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
     "vite": "^6.1.0"
+  },
+  "overrides": {
+    "date-fns": "^3.6.0"
   }
 }
