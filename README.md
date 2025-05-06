@@ -40,7 +40,7 @@
 1.  **リポジトリをクローン:**
 
     ```bash
-    git clone https://github.com/あなたのユーザー名/lifespan-todo.git
+    git clone https://github.com/toridesu/lifespan-todo.git
     cd lifespan-todo
     ```
 
