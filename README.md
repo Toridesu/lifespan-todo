@@ -1,4 +1,4 @@
-![Lifespan TODOアプリケーションのスクリーンショット](./lifespan-todo.png)
+![Lifespan TODOアプリケーションのスクリーンショット](https://github.com/user-attachments/assets/180c00e5-4f27-4824-8a82-9963de703fc2)
 
 # Lifespan TODO
 
